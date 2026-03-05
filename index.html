@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Gabriel — AI Automation Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #050508;
+            --color-surface: #0d0d14;
+            --color-surface-2: #13131e;
+            --color-accent: #00e5ff;
+            --color-accent-2: #7c3aed;
+            --color-accent-3: #10b981;
+            --color-muted: #6b6b80;
+            --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: #e2e8f0;
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .noise {
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.4;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            padding: 1rem 1.5rem;
+            backdrop-filter: blur(20px);
+            background-color: rgba(5, 5, 8, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            max-width: 80rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: var(--font-sans);
+            font-weight: 800;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo .accent {
+            color: var(--color-accent);
+        }
+
+        .nav-links {
+            display: none;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Hero Section */
+        section.hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.5rem;
+            padding-top: 5rem;
+            overflow: hidden;
+        }
+
+        .glow-1 {
+            position: absolute;
+            top: 25%;
+            right: -5rem;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: rgba(0, 229, 255, 0.05);
+            filter: blur(120px);
+            pointer-events: none;
+        }
+
+        .glow-2 {
+            position: absolute;
+            bottom: 25%;
+            left: -5rem;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(124, 58, 237, 0.05);
+            filter: blur(100px);
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 80rem;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: var(--color-accent);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 2rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 0.375rem;
+            height: 0.375rem;
+            border-radius: 50%;
+            background: var(--color-accent);
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        h1 {
+            font-family: var(--font-sans);
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 5rem;
+            }
+        }
+
+        h1 .muted {
+            color: var(--color-muted);
+        }
+
+        h1 .accent {
+            color: var(--color-accent);
+        }
+
+        .hero-desc {
+            color: var(--color-muted);
+            font-size: 1.125rem;
+            max-width: 28rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: #000;
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: rgba(0, 229, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: inherit;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--color-surface);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem 1.5rem;
+        }
+
+        .stats-container {
+            max-width: 80rem;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .stats-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .stats-container {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: var(--font-sans);
+            font-size: 1.875rem;
+            font-weight: 800;
+            color: var(--color-accent);
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: var(--color-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 1.5rem;
+        }
+
+        .section-container {
+            max-width: 80rem;
+            margin: 0 auto;
+        }
+
+        section.bg-surface {
+            background: rgba(13, 13, 20, 0.3);
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: var(--color-accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-family: var(--font-sans);
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 4rem;
+        }
+
+        h2 .accent {
+            color: var(--color-accent);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-card {
+            padding: 1.5rem;
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: rgba(0, 229, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .skill-icon {
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .skill-card h3 {
+            font-family: var(--font-sans);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .skill-card p {
+            color: var(--color-muted);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            padding: 2rem;
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 229, 255, 0.2);
+        }
+
+        .project-tag {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.5625rem;
+            color: var(--color-accent);
+            background: rgba(0, 229, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .project-card h3 {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover h3 {
+            color: var(--color-accent);
+        }
+
+        .project-desc {
+            color: var(--color-muted);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .metrics {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-value {
+            font-family: var(--font-sans);
+            font-weight: bold;
+            color: var(--color-accent-3);
+        }
+
+        .metric-label {
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            color: var(--color-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        .stack-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .stack-tag {
+            font-family: var(--font-mono);
+            font-size: 0.5625rem;
+            color: var(--color-muted);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Cases Grid */
+        .cases-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .case-card {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .case-card {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .case-card:hover {
+            border-color: rgba(0, 229, 255, 0.1);
+        }
+
+        .case-section h4 {
+            font-family: var(--font-mono);
+            font-size: 0.5625rem;
+            color: rgba(0, 229, 255, 0.3);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .case-section p {
+            font-size: 0.875rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .case-section.result p {
+            color: var(--color-accent-3);
+            font-weight: 500;
+        }
+
+        /* Tech Stack Grid */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .tech-card {
+            padding: 1.5rem;
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+        }
+
+        .tech-card h4 {
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .tech-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .tech-card li {
+            font-size: 0.875rem;
+            color: var(--color-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-card li::before {
+            content: '•';
+            color: rgba(0, 229, 255, 0.5);
+            font-weight: bold;
+        }
+
+        /* Experience */
+        .experience-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .experience-card {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .experience-card {
+                grid-template-columns: 200px 1fr;
+            }
+        }
+
+        .experience-date {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--color-muted);
+        }
+
+        .experience-card h3 {
+            font-family: var(--font-sans);
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .experience-role {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .experience-items {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .experience-item {
+            font-size: 0.875rem;
+            color: var(--color-muted);
+            display: flex;
+            gap: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .experience-item::before {
+            content: '→';
+            color: rgba(0, 229, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        /* Education */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .education-card {
+            padding: 1.5rem;
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .education-card:hover {
+            border-color: rgba(0, 229, 255, 0.2);
+        }
+
+        .education-icon {
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .education-card h3 {
+            font-family: var(--font-sans);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .education-card p {
+            color: var(--color-muted);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* Contact */
+        section.contact {
+            text-align: center;
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+        }
+
+        .contact-wrapper {
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
+        section.contact h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-desc {
+            color: var(--color-muted);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-link svg {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        /* Utility */
+        .border-accent {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-accent {
+            color: var(--color-accent);
+        }
+
+        /* Scroll Animations */
+        [data-reveal] {
+            opacity: 0;
+        }
+
+        [data-reveal="bottom"] {
+            transform: translateY(60px);
+        }
+
+        [data-reveal="left"] {
+            transform: translateX(-60px);
+        }
+
+        [data-reveal="right"] {
+            transform: translateX(60px);
+        }
+
+        [data-reveal="fade"] {
+            opacity: 0;
+        }
+
+        [data-reveal="scale"] {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        [data-reveal="up"] {
+            transform: translateY(40px);
+        }
+
+        [data-reveal].revealed {
+            animation: revealAnimation 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes revealAnimation {
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* Stagger effect for cards */
+        .skill-card[data-reveal],
+        .project-card[data-reveal],
+        .education-card[data-reveal],
+        .tech-card[data-reveal],
+        .experience-card[data-reveal].case-card[data-reveal] {
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .skill-card[data-reveal]:nth-child(1) { animation-delay: 0s; }
+        .skill-card[data-reveal]:nth-child(2) { animation-delay: 0.1s; }
+        .skill-card[data-reveal]:nth-child(3) { animation-delay: 0.2s; }
+        .skill-card[data-reveal]:nth-child(4) { animation-delay: 0.3s; }
+        .skill-card[data-reveal]:nth-child(5) { animation-delay: 0.4s; }
+        .skill-card[data-reveal]:nth-child(6) { animation-delay: 0.5s; }
+        .skill-card[data-reveal]:nth-child(7) { animation-delay: 0.6s; }
+        .skill-card[data-reveal]:nth-child(8) { animation-delay: 0.7s; }
+
+        .project-card[data-reveal]:nth-child(1) { animation-delay: 0s; }
+        .project-card[data-reveal]:nth-child(2) { animation-delay: 0.2s; }
+        .project-card[data-reveal]:nth-child(3) { animation-delay: 0.4s; }
+
+        .education-card[data-reveal]:nth-child(1) { animation-delay: 0s; }
+        .education-card[data-reveal]:nth-child(2) { animation-delay: 0.1s; }
+        .education-card[data-reveal]:nth-child(3) { animation-delay: 0.2s; }
+        .education-card[data-reveal]:nth-child(4) { animation-delay: 0.3s; }
+        .education-card[data-reveal]:nth-child(5) { animation-delay: 0.4s; }
+        .education-card[data-reveal]:nth-child(6) { animation-delay: 0.5s; }
+
+        .tech-card[data-reveal]:nth-child(1) { animation-delay: 0s; }
+        .tech-card[data-reveal]:nth-child(2) { animation-delay: 0.1s; }
+        .tech-card[data-reveal]:nth-child(3) { animation-delay: 0.2s; }
+        .tech-card[data-reveal]:nth-child(4) { animation-delay: 0.3s; }
+        .tech-card[data-reveal]:nth-child(5) { animation-delay: 0.4s; }
+        .tech-card[data-reveal]:nth-child(6) { animation-delay: 0.5s; }
+        .tech-card[data-reveal]:nth-child(7) { animation-delay: 0.6s; }
+        .tech-card[data-reveal]:nth-child(8) { animation-delay: 0.7s; }
+
+        /* 3D Perspective Effects */
+        .glow-1,
+        .glow-2 {
+            transition: transform 0.5s ease-out;
+        }
+
+        /* Hover 3D effect */
+        .skill-card,
+        .project-card,
+        .education-card,
+        .tech-card {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .skill-card:hover,
+        .project-card:hover,
+        .education-card:hover,
+        .tech-card:hover {
+            transform: rotateY(5deg) rotateX(-5deg) translateZ(20px);
+        }
+
+        /* Parallax for hero glows */
+        .glow-1,
+        .glow-2 {
+            will-change: transform;
+        }
+
+        /* Floating animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1[data-reveal],
+        h2[data-reveal] {
+            animation: none;
+        }
+
+        h1[data-reveal].revealed {
+            animation: revealAnimation 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        h2[data-reveal].revealed {
+            animation: revealAnimation 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Section title float effect */
+        section[data-reveal] h2 {
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        section[data-reveal].revealed h2 {
+            animation: revealAnimation 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">LG<span class="accent">.</span>dev</div>
+            <ul class="nav-links">
+                <li><a href="#sobre">sobre</a></li>
+                <li><a href="#projetos">projetos</a></li>
+                <li><a href="#automacao">automação</a></li>
+                <li><a href="#experiencia">experiência</a></li>
+                <li><a href="#contato">contato</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="sobre">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+        <div class="hero-container">
+            <div class="status-badge" data-reveal="fade">DISPONÍVEL PARA OPORTUNIDADES</div>
+
+            <h1 data-reveal="up">
+                <span class="muted">Lucas Gabriel</span><br>
+                <span class="accent">AI Automation</span><br>
+                Engineer
+            </h1>
+
+            <p class="hero-desc" data-reveal="up">
+                Transformo processos empresariais em workflows inteligentes com IA. 
+                10+ anos em áreas administrativas e financeiras — agora na fronteira entre 
+                automação, LLMs e sistemas full-stack.
+            </p>
+
+            <div class="button-group" data-reveal="up">
+                <a href="https://wa.me/5531990830534" target="_blank" class="btn btn-primary">
+                    ENTRAR EM CONTATO
+                </a>
+                <a href="#projetos" class="btn btn-secondary">VER PROJETOS →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <div class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-value">75+</div>
+                <div class="stat-label">Workflows N8N</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">15+</div>
+                <div class="stat-label">APIs Integradas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">100+</div>
+                <div class="stat-label">Horas Econ./mês</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">10+</div>
+                <div class="stat-label">Anos de Exp.</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">5+</div>
+                <div class="stat-label">Clientes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Sistemas Full-Stack</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Section -->
+    <section data-reveal="bottom">
+        <div class="section-container">
+            <div class="section-label" data-reveal="fade">// competências</div>
+            <h2 data-reveal="bottom">Stack & <span class="accent">Expertise</span></h2>
+            <div class="skills-grid">
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">⚡</div>
+                    <h3>N8N Automation</h3>
+                    <p>75+ workflows complexos. Nodes avançados, credenciais, scheduling e error handling.</p>
+                </div>
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">🤖</div>
+                    <h3>LLM Engineering</h3>
+                    <p>Orquestração multi-modelo: GPT-4o, Claude, Gemini. RAG pipelines e Agents.</p>
+                </div>
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">🔗</div>
+                    <h3>API Integration</h3>
+                    <p>15+ plataformas: Google, Meta, Supabase, Stripe, Notion. OAuth2 e webhooks.</p>
+                </div>
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">&lt; /&gt;</div>
+                    <h3>Backend Dev</h3>
+                    <p>Node.js + Express, TypeScript, REST API design, JWT auth e PostgreSQL.</p>
+                </div>
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">🗄️</div>
+                    <h3>Database Arch</h3>
+                    <p>Supabase (PostgreSQL), Pinecone (Vector DB), RLS, schema design e PL/pgSQL.</p>
+                </div>
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">📊</div>
+                    <h3>Data & Analytics</h3>
+                    <p>Power BI dashboards, Azure Databricks, ETL pipelines e SAP.</p>
+                </div>
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">🌐</div>
+                    <h3>Web Automation</h3>
+                    <p>Playwright e Puppeteer. Session persistence, scraping avançado e automation.</p>
+                </div>
+                <div class="skill-card" data-reveal="bottom">
+                    <div class="skill-icon">☁️</div>
+                    <h3>Cloud & DevOps</h3>
+                    <p>Azure AI, Docker, VPS management, GitHub Actions CI/CD e Nginx.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="bg-surface" id="projetos" data-reveal="bottom">
+        <div class="section-container">
+            <div class="section-label" data-reveal="fade">// sistemas full-stack</div>
+            <h2 data-reveal="bottom">Projetos <span class="accent">Desenvolvidos</span></h2>
+            <div class="projects-grid">
+                <div class="project-card" data-reveal="bottom">
+                    <span class="project-tag">SaaS B2B · Em produção</span>
+                    <h3>Zenvoko — Text-to-Speech Platform</h3>
+                    <p class="project-desc">Plataforma SaaS completa para conversão de texto em áudio com 16 vozes IA profissionais. Sistema de assinaturas com Stripe.</p>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">3.700+</div>
+                            <div class="metric-label">linhas de código</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">25+</div>
+                            <div class="metric-label">endpoints API</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">16</div>
+                            <div class="metric-label">vozes IA</div>
+                        </div>
+                    </div>
+                    <div class="stack-tags">
+                        <span class="stack-tag">Node.js</span>
+                        <span class="stack-tag">React</span>
+                        <span class="stack-tag">TypeScript</span>
+                        <span class="stack-tag">Supabase</span>
+                        <span class="stack-tag">Stripe</span>
+                        <span class="stack-tag">Docker</span>
+                    </div>
+                </div>
+
+                <div class="project-card" data-reveal="bottom">
+                    <span class="project-tag">Enterprise · Web Full-Stack</span>
+                    <h3>Sistema de Almoxarifado TI/Com</h3>
+                    <p class="project-desc">Sistema web empresarial completo para gerenciamento de estoque e equipamentos. 7 perfis de acesso e QR Code integrado.</p>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">100+</div>
+                            <div class="metric-label">endpoints REST</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">35+</div>
+                            <div class="metric-label">tabelas DB</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">24</div>
+                            <div class="metric-label">páginas frontend</div>
+                        </div>
+                    </div>
+                    <div class="stack-tags">
+                        <span class="stack-tag">React</span>
+                        <span class="stack-tag">Node.js</span>
+                        <span class="stack-tag">PostgreSQL</span>
+                        <span class="stack-tag">Socket.io</span>
+                        <span class="stack-tag">Ant Design</span>
+                        <span class="stack-tag">JWT</span>
+                    </div>
+                </div>
+
+                <div class="project-card" data-reveal="bottom">
+                    <span class="project-tag">Automação · AI Agents</span>
+                    <h3>75+ Enterprise Workflows N8N</h3>
+                    <p class="project-desc">Portfólio de agentes de automação inteligente: SDR, RH, conteúdo e pipelines RAG com LLMs.</p>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">75+</div>
+                            <div class="metric-label">agentes</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">5+</div>
+                            <div class="metric-label">LLMs usados</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8</div>
+                            <div class="metric-label">áreas cobertas</div>
+                        </div>
+                    </div>
+                    <div class="stack-tags">
+                        <span class="stack-tag">N8N</span>
+                        <span class="stack-tag">OpenAI</span>
+                        <span class="stack-tag">Claude</span>
+                        <span class="stack-tag">LangChain</span>
+                        <span class="stack-tag">Pinecone</span>
+                        <span class="stack-tag">WhatsApp</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cases Section -->
+    <section id="automacao" data-reveal="bottom">
+        <div class="section-container">
+            <div class="section-label" data-reveal="fade">// casos de uso</div>
+            <h2 data-reveal="bottom">Resultados <span class="accent">Reais</span></h2>
+            <div class="cases-grid">
+                <div class="case-card" data-reveal="bottom">
+                    <div class="case-section">
+                        <h4>CASE 01</h4>
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Problema</h4>
+                        <p>100+ leads/mês com qualificação manual demorada. Time comercial gastava 10h/semana em calls de triagem.</p>
+                    </div>
+                    <div class="case-section">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Solução</h4>
+                        <p>SDR Agent conversacional com GPT-4o-mini via N8N. Coleta dados, calcula score e só envia leads qualificados.</p>
+                    </div>
+                    <div class="case-section result">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Resultado</h4>
+                        <p>+300% leads processados. 40h/mês economizadas. Conversão melhorou drasticamente.</p>
+                    </div>
+                </div>
+
+                <div class="case-card" data-reveal="bottom">
+                    <div class="case-section">
+                        <h4>CASE 02</h4>
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Problema</h4>
+                        <p>Diretor respondia 50+ emails/dia manualmente. Tempo crítico desperdiçado em respostas repetitivas.</p>
+                    </div>
+                    <div class="case-section">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Solução</h4>
+                        <p>Sistema RAG com busca semântica via Pinecone + OpenAI. Integração N8N + Gmail para resposta automática.</p>
+                    </div>
+                    <div class="case-section result">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Resultado</h4>
+                        <p>Respostas em &lt; 30s. 1h/dia economizada para o diretor. 100% de precisão nas respostas.</p>
+                    </div>
+                </div>
+
+                <div class="case-card" data-reveal="bottom">
+                    <div class="case-section">
+                        <h4>CASE 03</h4>
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Problema</h4>
+                        <p>Marketing criava conteúdo manualmente. 5h/semana só para criar e publicar posts em múltiplas plataformas.</p>
+                    </div>
+                    <div class="case-section">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Solução</h4>
+                        <p>Pipeline N8N + Veo3 + HeyGen + Grok-2 para gerar Reels, blog posts e publicação automática.</p>
+                    </div>
+                    <div class="case-section result">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Resultado</h4>
+                        <p>15+ posts/semana em múltiplos formatos. Zero tempo manual. Consistência de publicação 100%.</p>
+                    </div>
+                </div>
+
+                <div class="case-card" data-reveal="bottom">
+                    <div class="case-section">
+                        <h4>CASE 04</h4>
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Problema</h4>
+                        <p>Time de RH avaliava 50+ currículos/mês manualmente. Critérios inconsistentes e processo lento.</p>
+                    </div>
+                    <div class="case-section">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Solução</h4>
+                        <p>Agente N8N com extração de PDF + OpenAI que avalia, rankeia e estrutura dados em JSON Schema.</p>
+                    </div>
+                    <div class="case-section result">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Resultado</h4>
+                        <p>20h/semana → 1h/semana. Critérios 100% consistentes. Time vê apenas o top 10 de candidatos.</p>
+                    </div>
+                </div>
+
+                <div class="case-card" data-reveal="bottom">
+                    <div class="case-section">
+                        <h4>CASE 05</h4>
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Problema</h4>
+                        <p>Infraestrutura com downtime frequente. Diagnóstico lento e sem alertas proativos.</p>
+                    </div>
+                    <div class="case-section">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Solução</h4>
+                        <p>Monitoramento VPS via SSH + Docker com alertas em tempo real no WhatsApp. Auto-remediation automático.</p>
+                    </div>
+                    <div class="case-section result">
+                        <h4 style="color: var(--color-muted); margin-bottom: 0.75rem;">Resultado</h4>
+                        <p>Zero downtime. Diagnóstico em menos de 5 minutos. Infraestrutura auto-corrigida.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="border-accent" data-reveal="bottom">
+        <div class="section-container">
+            <div class="section-label" data-reveal="fade">// tecnologias</div>
+            <h2 data-reveal="bottom">Tech <span class="accent">Stack</span></h2>
+            <div class="tech-grid">
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>Automação</h4>
+                    <ul>
+                        <li>N8N (self/cloud-hosted)</li>
+                        <li>LangChain</li>
+                        <li>Playwright</li>
+                        <li>Puppeteer</li>
+                    </ul>
+                </div>
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>LLMs & IA</h4>
+                    <ul>
+                        <li>OpenAI GPT-4o</li>
+                        <li>Anthropic Claude</li>
+                        <li>Google Gemini</li>
+                        <li>Grok · Mistral</li>
+                    </ul>
+                </div>
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>Backend</h4>
+                    <ul>
+                        <li>Node.js + Express</li>
+                        <li>TypeScript</li>
+                        <li>REST APIs</li>
+                        <li>JWT · OAuth2</li>
+                    </ul>
+                </div>
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>Frontend</h4>
+                    <ul>
+                        <li>React 18 + Vite</li>
+                        <li>Tailwind CSS</li>
+                        <li>Ant Design 5</li>
+                        <li>Zustand · Axios</li>
+                    </ul>
+                </div>
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>Dados</h4>
+                    <ul>
+                        <li>PostgreSQL · Supabase</li>
+                        <li>Pinecone Vector DB</li>
+                        <li>Redis</li>
+                        <li>Power BI · Azure Databricks</li>
+                    </ul>
+                </div>
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>Cloud & DevOps</h4>
+                    <ul>
+                        <li>Docker · GitHub Actions</li>
+                        <li>Azure AI · Hetzner VPS</li>
+                        <li>Nginx · Let's Encrypt</li>
+                        <li>SSH · Cloudflare</li>
+                    </ul>
+                </div>
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>Integrações</h4>
+                    <ul>
+                        <li>Google Workspace</li>
+                        <li>WhatsApp · Telegram</li>
+                        <li>Instagram · LinkedIn</li>
+                        <li>Stripe · Notion</li>
+                    </ul>
+                </div>
+                <div class="tech-card" data-reveal="bottom">
+                    <h4>Conteúdo IA</h4>
+                    <ul>
+                        <li>Veo3 (geração de vídeo)</li>
+                        <li>HeyGen (avatar clone)</li>
+                        <li>Zenvoko TTS</li>
+                        <li>Seedance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="bg-surface" id="experiencia" data-reveal="bottom">
+        <div class="section-container">
+            <div class="section-label" data-reveal="fade">// trajetória</div>
+            <h2 data-reveal="bottom">Experiência <span class="accent">Profissional</span></h2>
+            <div class="experience-grid">
+                <div class="experience-card" data-reveal="bottom">
+                    <div class="experience-date">2023 – Atual</div>
+                    <div>
+                        <h3>Projetos Próprios</h3>
+                        <div class="experience-role">AI Automation Engineer</div>
+                        <div class="experience-items">
+                            <div class="experience-item">Desenvolvimento de 75+ workflows N8N para automação empresarial</div>
+                            <div class="experience-item">Criação de sistemas full-stack: Zenvoko (SaaS TTS) e Sistema de Almoxarifado</div>
+                            <div class="experience-item">Integração de LLMs (OpenAI, Claude, Grok) em pipelines de produção</div>
+                            <div class="experience-item">Arquitetura RAG com Pinecone e embeddings para bases de conhecimento</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="experience-card" data-reveal="bottom">
+                    <div class="experience-date">2018 – 2024</div>
+                    <div>
+                        <h3>PROGEN S/A</h3>
+                        <div class="experience-role">Analista Pleno</div>
+                        <div class="experience-items">
+                            <div class="experience-item">Otimização de processos administrativos e financeiros</div>
+                            <div class="experience-item">Criação de relatórios gerenciais com Power BI</div>
+                            <div class="experience-item">Gestão de contratos, orçamentos e fornecedores</div>
+                            <div class="experience-item">Desenvolvimento de sistemas de informação e indicadores</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section data-reveal="bottom">
+        <div class="section-container">
+            <div class="section-label" data-reveal="fade">// formação</div>
+            <h2 data-reveal="bottom">Formação & <span class="accent">Certificações</span></h2>
+            <div class="education-grid">
+                <div class="education-card" data-reveal="bottom">
+                    <div class="education-icon">🎓</div>
+                    <h3>Administração de Empresas</h3>
+                    <p>Universidade Salgado de Oliveira — Concluído</p>
+                </div>
+                <div class="education-card" data-reveal="bottom">
+                    <div class="education-icon">☁️</div>
+                    <h3>Microsoft AI for Tech</h3>
+                    <p>Azure Databricks — Microsoft</p>
+                </div>
+                <div class="education-card" data-reveal="bottom">
+                    <div class="education-icon">🤖</div>
+                    <h3>Engenharia de Prompts</h3>
+                    <p>Escrita de Prompts Eficazes para LLMs</p>
+                </div>
+                <div class="education-card" data-reveal="bottom">
+                    <div class="education-icon">⚙️</div>
+                    <h3>DevOps + Azure Cloud</h3>
+                    <p>GitHub + Azure Notebooks + Versionamento</p>
+                </div>
+                <div class="education-card" data-reveal="bottom">
+                    <div class="education-icon">⚡</div>
+                    <h3>Agentes com IA (n8n)</h3>
+                    <p>Série NoCode StartUp — Automação com N8N</p>
+                </div>
+                <div class="education-card" data-reveal="bottom">
+                    <div class="education-icon">📊</div>
+                    <h3>Lean Seis Sigma</h3>
+                    <p>Fundamentos de Gestão de Processos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contato" data-reveal="bottom">
+        <div class="contact-wrapper">
+            <div class="section-label" data-reveal="fade">// contato</div>
+            <h2 data-reveal="bottom">Vamos <span class="accent">conversar?</span></h2>
+            <p class="contact-desc" data-reveal="up">
+                Procuro oportunidades onde possa transformar processos em workflows inteligentes — 
+                seja como parte de um time ou como consultor especializado.
+            </p>
+            <div class="contact-links">
+                <a href="mailto:lucbh16@yahoo.com.br" class="contact-link">
+                    <span>✉️</span> lucbh16@yahoo.com.br
+                </a>
+                <a href="https://wa.me/5531990830534" target="_blank" class="contact-link">
+                    <span>📱</span> (31) 9-9083-0534
+                </a>
+                <a href="https://linkedin.com/in/lucas-gabriel-182088142" target="_blank" class="contact-link">
+                    <span>🔗</span> LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with data-reveal attribute
+        document.querySelectorAll('[data-reveal]').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Parallax effect for background glows on mouse move
+        const glows = document.querySelectorAll('.glow-1, .glow-2');
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX / window.innerWidth;
+            mouseY = e.clientY / window.innerHeight;
+
+            glows.forEach((glow, index) => {
+                const speed = index === 0 ? 15 : 20;
+                const x = (mouseX - 0.5) * speed;
+                const y = (mouseY - 0.5) * speed;
+                glow.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Smooth scroll behavior for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add scroll event for additional parallax effects
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            
+            glows.forEach((glow, index) => {
+                const speed = index === 0 ? -0.3 : -0.5;
+                glow.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
